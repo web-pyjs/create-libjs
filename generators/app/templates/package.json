@@ -3,14 +3,26 @@
   "version": "",
   "description": "",
   "main": "",
+  <% if (cmd) { %>
+  "bin":{
+    "<%= name %>" : "bin/<%= name %>.js"
+  },
+  <% } %>
+  <% if (!cmd) { %>
   "module": "",
   "unpkg": "",
   "typings": "index.d.ts",
+  <% } %>
   "author": "Nassih soufiane",
   "files": [
+  <% if (!cmd) { %>
     "lib",
     "umd",
     "index.d.ts"
+  <% } %>
+  <% if (cmd) { %>
+    "bin"
+  <% } %>
   ],
   "license": "MIT",
   "peerDependencies": {},
@@ -31,15 +43,17 @@
     "eslint-plugin-prettier": "^3.0.1",
     "eslint-plugin-react": "^7.11.0",
     "prettier": "^1.15.3",
-    "regenerator-runtime": "^0.13.1",
     "rollup": "^1.1.0",
     "rollup-plugin-babel": "^4.3.0",
-    "rollup-plugin-node-resolve": "^4.0.0",
+    "rollup-plugin-node-resolve": "^4.0.0"
+    <% if (!cmd) { %>
+      ,
     "rollup-plugin-replace": "^2.1.0",
     "rollup-plugin-terser": "^4.0.4"
+    <% } %>
   },
   "scripts": {
-    "build": "rollup -c",
+    "build": "rollup -c <% if(cmd){ %> && chmod +x bin/<%= name %>.js <% } %>",
     "publish": "rollup -c && yarn publish",
     "watch": "rollup -c -w",
     "test": "jest",

@@ -1,19 +1,21 @@
 import resolve from "rollup-plugin-node-resolve";
 import babel from "rollup-plugin-babel";
-import replace from "rollup-plugin-replace";
+<% if(!cmd){ %>import replace from "rollup-plugin-replace";
 import { terser } from "rollup-plugin-terser";
 import pkg from "./package.json";
+<% } %>
 
 export default [
   // CommonJS
   {
     input: "src/index.js",
     output: {
-      file: "lib/<%= name %>.cjs.js",
+      <% if(cmd){ %> banner: "#!/usr/bin/env node", <% } %>
+      file: "<% if (!cmd){ %>lib/<%=name%>.cjs<% } %><% if(cmd){ %>bin/<%= name %><% }%>.js",
       format: "cjs",
       indent: false
     },
-    external: [...Object.keys(pkg.peerDependencies || {})],
+    external: <% if(!cmd) {%> [ ...Object.keys(pkg.peerDependencies || {}) ]<% } %> <% if(cmd) { %> [] <% } %> ,
     plugins: [
       resolve(),
       babel({
@@ -21,6 +23,7 @@ export default [
       })
     ]
   },
+  <% if(!cmd) { %>
   // ES
   {
     input: "src/index.js",
@@ -113,4 +116,5 @@ export default [
       })
     ]
   }
+  <% } %>
 ];

@@ -13,6 +13,7 @@ module.exports = class extends Generator {
     // Get options
     this.option("circleci");
     this.option("travis");
+    this.option("cmd");
   }
 
   async prompting() {
@@ -36,12 +37,13 @@ module.exports = class extends Generator {
 
   writing() {
     const { version, description } = this.answers;
-    const { appName, appPath, travis, circleci } = this.options;
+    const { appName, appPath, travis, circleci, cmd } = this.options;
     const appPrefix = appPath || appName;
 
     // Copy all file in template to destination
     this.fs.copyTpl(this.templatePath(), this.destinationPath(appPrefix), {
-      name: appName
+      name: appName,
+      cmd
     });
 
     // Copy eslintrc config file
@@ -73,10 +75,12 @@ module.exports = class extends Generator {
       name: appName,
       version,
       description,
-      main: `lib/${appName}.cjs.js`,
-      module: `lib/${appName}.es.js`,
-      unpkg: `umd/${appName}.js`
+      main: `${cmd ? "bin/" : "lib/cjs"}${appName}.js`
     };
+    if (!cmd) {
+      pkgJson.module = `lib/${appName}.es.js`;
+      pkgJson.unpkg = `umd/${appName}.js`;
+    }
 
     this.fs.extendJSON(
       this.destinationPath(path.join(appPrefix, "package.json")),
