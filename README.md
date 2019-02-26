@@ -1,4 +1,4 @@
-# generator-lib [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
+# generator-libraryjs [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
 > Generator for javascirpt library
 
 ## Installation
@@ -7,13 +7,13 @@ First, install [Yeoman](http://yeoman.io) and generator-lib using [npm](https://
 
 ```bash
 npm install -g yo
-npm install -g generator-lib
+npm install -g generator-libraryjs
 ```
 
 Then generate your new project:
 
 ```bash
-yo lib
+yo libraryjs
 ```
 
 ## Getting To Know Yeoman
