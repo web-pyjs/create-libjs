@@ -1,0 +1,21 @@
+{
+	"env": { "browser": true },
+	"extends": ["airbnb", "prettier"],
+	"plugins": ["prettier"],
+	"parser": "babel-eslint",
+	"rules": {
+		"prettier/prettier": ["error"],
+		"func-names": "off",
+		"no-underscore-dangle": "off"
+	},
+	"overrides": [
+		{
+			"files": ["*.test.js", "utils.js"],
+			"rules": {
+				"no-unused-expressions": "off",
+				"no-undef": "off",
+				"no-eval": "off"
+			}
+		}
+	]
+}
