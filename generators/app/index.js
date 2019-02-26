@@ -31,7 +31,9 @@ module.exports = class extends Generator {
 
   writing() {
     // Copy all file in template to destination
-    this.fs.copy(this.templatePath(), this.destinationPath());
+    this.fs.copyTpl(this.templatePath(), this.destinationPath(), {
+      name: this.answers.name
+    });
 
     // Copy eslintrc config file
     this.fs.copy(
@@ -46,10 +48,15 @@ module.exports = class extends Generator {
 
     // Extends package.json
 
+    const { name, version, description } = this.answers;
+
     const pkgJson = {
-      name: this.answers.name,
-      version: this.answers.version,
-      description: this.answers.description
+      name,
+      version,
+      description,
+      main: `lib/${name}.cjs.js`,
+      module: `lib/${name}.es.js`,
+      unpkg: `umd/${name}.js`
     };
 
     this.fs.extendJSON(this.destinationPath("package.json"), pkgJson);

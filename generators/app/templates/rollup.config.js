@@ -9,7 +9,7 @@ export default [
   {
     input: "src/index.js",
     output: {
-      file: "lib/index.cjs.js",
+      file: "lib/<%= name %>.cjs.js",
       format: "cjs",
       indent: false
     },
@@ -25,7 +25,7 @@ export default [
   {
     input: "src/index.js",
     output: {
-      file: "lib/index.es.js",
+      file: "lib/<%= name %>.es.js",
       format: "es",
       indent: false
     },
@@ -41,7 +41,7 @@ export default [
   {
     input: "src/index.js",
     output: {
-      file: "lib/index.es.mjs",
+      file: "lib/<%= name %>.es.mjs",
       format: "es",
       indent: false
     },
@@ -68,10 +68,10 @@ export default [
   {
     input: "src/index.js",
     output: {
-      file: "umd/index.js",
+      file: "umd/<%= name %>.js",
       format: "umd",
       globals: pkg.peerDependencies,
-      name: "Fromhk",
+      name: "<%= name %>",
       indent: false
     },
     external: [...Object.keys(pkg.peerDependencies || {})],
@@ -88,10 +88,10 @@ export default [
   {
     input: "src/index.js",
     output: {
-      file: "umd/index.min.js",
+      file: "umd/<%= name %>.min.js",
       format: "umd",
       globals: pkg.peerDependencies,
-      name: "Fromhk",
+      name: "<%= name %>",
       indent: false
     },
     external: [...Object.keys(pkg.peerDependencies || {})],
