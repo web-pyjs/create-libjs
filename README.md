@@ -1,9 +1,9 @@
-# generator-libraryjs [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
-> Generator for javascirpt library
+# generator-libraryjs 
+> Simple javascirpt library project generator 
 
 ## Installation
 
-First, install [Yeoman](http://yeoman.io) and generator-lib using [npm](https://www.npmjs.com/) (we assume you have pre-installed [node.js](https://nodejs.org/)).
+First, install [Yeoman](http://yeoman.io) and generator-libraryjs using [npm](https://www.npmjs.com/) (we assume you have pre-installed [node.js](https://nodejs.org/)).
 
 ```bash
 npm install -g yo
@@ -13,8 +13,25 @@ npm install -g generator-libraryjs
 Then generate your new project:
 
 ```bash
-yo libraryjs
+yo libraryjs appName [path] -f
 ```
+
+## Options
+### --cmd
+
+Generate javascript library project to create javascirpt command line tool
+
+### --circleci
+
+Generate circleci configuration file for continuous integration testing circleci
+
+### --travis
+
+Generate travis ci configuration file for continuous integration testing using travis ci
+
+### --yarn
+
+use yarn to install packages dependencies
 
 ## Getting To Know Yeoman
 
