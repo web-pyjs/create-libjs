@@ -2,7 +2,7 @@
 const Generator = require("yeoman-generator");
 const chalk = require("chalk");
 const yosay = require("yosay");
-const path = require("path");
+const mkdir = require("mkdirp");
 
 module.exports = class extends Generator {
   constructor(args, opts) {
@@ -14,6 +14,16 @@ module.exports = class extends Generator {
     this.option("circleci");
     this.option("travis");
     this.option("cmd");
+    this.option("yarn");
+  }
+
+  default() {
+    const appPath = this.destinationPath(
+      this.options.appPath || this.options.appName
+    );
+    mkdir(appPath);
+    this.destinationRoot(appPath);
+    this.log(`Create new folder for library in ${chalk.green(appPath)}`);
   }
 
   async prompting() {
@@ -37,11 +47,10 @@ module.exports = class extends Generator {
 
   writing() {
     const { version, description } = this.answers;
-    const { appName, appPath, travis, circleci, cmd } = this.options;
-    const appPrefix = appPath || appName;
+    const { appName, travis, circleci, cmd } = this.options;
 
     // Copy all file in template to destination
-    this.fs.copyTpl(this.templatePath(), this.destinationPath(appPrefix), {
+    this.fs.copyTpl(this.templatePath(), this.destinationPath(), {
       name: appName,
       cmd
     });
@@ -49,23 +58,23 @@ module.exports = class extends Generator {
     // Copy eslintrc config file
     this.fs.copy(
       this.templatePath(".eslintrc.json"),
-      this.destinationPath(path.join(appPrefix, ".eslintrc.json"))
+      this.destinationPath(".eslintrc.json")
     );
     // Copy gitignore file
     this.fs.copy(
       this.templatePath(".gitignore"),
-      this.destinationPath(path.join(appPrefix, ".gitignore"))
+      this.destinationPath(".gitignore")
     );
 
     if (circleci) {
       this.fs.copy(
         this.templatePath(".circleci"),
-        this.destinationPath(path.join(appPrefix, ".circleci"))
+        this.destinationPath(".circleci")
       );
     } else if (travis) {
       this.fs.copy(
         this.templatePath(".travis"),
-        this.destinationPath(path.join(appPrefix, ".travis"))
+        this.destinationPath(".travis")
       );
     }
 
@@ -82,15 +91,14 @@ module.exports = class extends Generator {
       pkgJson.unpkg = `umd/${appName}.js`;
     }
 
-    this.fs.extendJSON(
-      this.destinationPath(path.join(appPrefix, "package.json")),
-      pkgJson
-    );
+    this.fs.extendJSON(this.destinationPath("package.json"), pkgJson);
   }
 
   install() {
-    // Install all package with yarn
-    process.chdir(path.join(this.options.appPath || this.options.appName));
-    this.yarnInstall();
+    this.installDependencies({
+      bower: false,
+      yarn: this.options.yarn,
+      npm: !this.options.yarn
+    });
   }
 };
