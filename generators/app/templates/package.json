@@ -44,6 +44,7 @@
     "watch": "rollup -c -w",
     "test": "jest",
     "tc": "jest --coverage && rm -rf ./coverage",
-    "lint": "eslint ./src"
+    "lint": "eslint ./src",
+    "coverage": ""
   }
 }

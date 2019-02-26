@@ -7,8 +7,12 @@ const path = require("path");
 module.exports = class extends Generator {
   constructor(args, opts) {
     super(args, opts);
+    // Get arguments
     this.argument("appName", { type: String, required: true });
     this.argument("appPath", { type: String, required: false });
+    // Get options
+    this.option("circleci");
+    this.option("travis");
   }
 
   async prompting() {
@@ -32,7 +36,7 @@ module.exports = class extends Generator {
 
   writing() {
     const { version, description } = this.answers;
-    const { appName, appPath } = this.options;
+    const { appName, appPath, travis, circleci } = this.options;
     const appPrefix = appPath || appName;
 
     // Copy all file in template to destination
@@ -50,6 +54,18 @@ module.exports = class extends Generator {
       this.templatePath(".gitignore"),
       this.destinationPath(path.join(appPrefix, ".gitignore"))
     );
+
+    if (circleci) {
+      this.fs.copy(
+        this.templatePath(".circleci"),
+        this.destinationPath(path.join(appPrefix, ".circleci"))
+      );
+    } else if (travis) {
+      this.fs.copy(
+        this.templatePath(".travis"),
+        this.destinationPath(path.join(appPrefix, ".travis"))
+      );
+    }
 
     // Extends package.json
 
